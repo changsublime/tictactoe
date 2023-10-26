@@ -45,11 +45,6 @@ fn check_tie<'a>(board: &[&'a str; 9]) -> &'a bool{
 }
 
 fn tictactoe(){
-    printdoc!("
-        Welcome to TicTacToe!
-        Players can make moves by entering the number of the square they would like to play in:
-        ");
-    display(&["0","1","2","3","4","5","6","7","8"]);
     println!("X goes first. Have fun!");
 
     let mut board = [" ", " ", " ", " ", " ", " ", " ", " ", " "];
@@ -99,6 +94,34 @@ fn tictactoe(){
 
 fn main(){
     loop{
+        printdoc!("
+            Welcome to TicTacToe!
+            Players can make moves by entering the number of the square they would like to play in:
+            ");
+        display(&["0","1","2","3","4","5","6","7","8"]);
         tictactoe();
+
+        loop {
+            println!("Would you like to play a new game? (y/n)");
+            let mut line = String::new();
+            io::stdin()
+                .read_line(&mut line)
+                .expect("Failed to read line");
+            
+            match line.trim() {
+                "y" => {
+                    println!("Starting a new game");
+                    break;
+                },
+                "n" => {
+                    println!("Thanks for playing!");
+                    return;
+                },
+                x => {
+                    println!("{}", x);
+                    continue;
+                }
+            };
+        }
     }
  }
