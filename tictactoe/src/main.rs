@@ -50,8 +50,7 @@ fn tictactoe(){
             _ => continue,
         };
 
-        let fair = check_valid_move(&board, &position);
-        if !fair{
+        if !check_valid_move(&board, &position){
             println!("That square is already taken. Try again!");
             continue;
         }
