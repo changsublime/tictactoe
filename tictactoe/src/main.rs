@@ -35,6 +35,15 @@ fn check_winner<'a>(board: &[&'a str; 9]) -> &'a bool{
     return &false;
 }
 
+fn check_tie<'a>(board: &[&'a str; 9]) -> &'a bool{
+    for c in board {
+        if *c == " " {
+            return &false;
+        }
+    };
+    return &true;
+}
+
 fn tictactoe(){
     printdoc!("
         Welcome to TicTacToe!
@@ -47,7 +56,7 @@ fn tictactoe(){
     let mut player = "X"; // start with X's turn
 
     loop {
-        println!("Player {}, please make your move (0-8): ", player);
+        println!("\nPlayer {}, please make your move (0-8): ", player);
         let mut line = String::new();
         io::stdin()
             .read_line(&mut line)
@@ -70,9 +79,15 @@ fn tictactoe(){
         board[position] = player;
         display(&board);
 
-        // check game end state
+        // check win state
         if *check_winner(&board){
             println!("Congrats player {}, you won!\n", player);
+            break
+        };
+
+        // check tie state
+        if *check_tie(&board){
+            println!("It's a tied game!\n");
             break
         };
 
