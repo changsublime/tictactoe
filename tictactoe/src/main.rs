@@ -13,20 +13,15 @@ fn display(&[a, b, c ,d, e, f, g, h, i]: &[&str; 9]){
     ", a, b, c, d, e, f, g, h, i};
 }
 
-fn check_valid_move(board: [&str; 9], m: usize) -> &bool{
-    if board[m] == " "{
+fn check_valid_move<'a>(board: &[&'a str; 9], m: &'a usize) -> &'a bool{
+    if board[*m] == " "{
         return &true;
     } else {
         return &false;
     }
 }
 
-fn play<'a>(mut board: [&'a str; 9], player: &'a str, m: usize) -> [&'a str; 9]{
-    board[m] = player;
-    return board;
-}
-
-fn check_winner(board: [&str; 9]) -> &bool{
+fn check_winner<'a>(board: &[&'a str; 9]) -> &'a bool{
     // TODO
     return &false;
 }
@@ -55,20 +50,20 @@ fn tictactoe(){
             _ => continue,
         };
 
-        let fair = check_valid_move(board, position);
+        let fair = check_valid_move(&board, &position);
         if !fair{
             println!("That square is already taken. Try again!");
             continue;
         }
 
-        board = play(board, player, position);
-
-        player = if player == "O" {"X"} else {"O"}; // flip player
-
+        board[position] = player;
         display(&board);
+        
+        // flip player
+        player = if player == "O" {"X"} else {"O"};
 
         // check game end state
-        let winner = check_winner(board);
+        let winner = check_winner(&board);
         match winner{
             true => break,
             _ => continue,
@@ -78,5 +73,7 @@ fn tictactoe(){
 
 
 fn main(){
-    tictactoe();
+    loop{
+        tictactoe();
+    }
  }
