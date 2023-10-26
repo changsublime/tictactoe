@@ -14,7 +14,7 @@ fn display(&[a, b, c ,d, e, f, g, h, i]: &[&str; 9]){
 }
 
 fn check_valid_move<'a>(board: &[&'a str; 9], m: &'a usize) -> &'a bool{
-    if board[*m] == " "{
+    if board[*m] == " " {
         return &true;
     } else {
         return &false;
@@ -22,7 +22,16 @@ fn check_valid_move<'a>(board: &[&'a str; 9], m: &'a usize) -> &'a bool{
 }
 
 fn check_winner<'a>(board: &[&'a str; 9]) -> &'a bool{
-    // TODO
+    let win_states: [[usize; 3]; 8] = [
+        [0, 1, 2], [3, 4, 5], [6, 7, 8],
+        [0, 3, 6], [1, 4, 7], [2, 5, 8],
+        [0, 4, 8], [2, 4, 6]
+    ];
+    for [x, y, z] in &win_states {
+        if board[*x] != " " && board[*x] == board[*y] && board[*y] == board[*z] {
+            return &true;
+        };
+    };
     return &false;
 }
 
@@ -47,7 +56,10 @@ fn tictactoe(){
 
         match position{
             0..=8 => (),
-            _ => continue,
+            _ => {
+                println!("Invalid square. Try again!");
+                continue;
+            }
         };
 
         if !check_valid_move(&board, &position){
@@ -57,16 +69,15 @@ fn tictactoe(){
 
         board[position] = player;
         display(&board);
-        
-        // flip player
-        player = if player == "O" {"X"} else {"O"};
 
         // check game end state
-        let winner = check_winner(&board);
-        match winner{
-            true => break,
-            _ => continue,
+        if *check_winner(&board){
+            println!("Congrats player {}, you won!\n", player);
+            break
         };
+
+        // flip player
+        player = if player == "O" {"X"} else {"O"};
     }
 }
 
