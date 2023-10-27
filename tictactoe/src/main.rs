@@ -117,10 +117,7 @@ fn main(){
                     println!("Thanks for playing!");
                     return;
                 },
-                x => {
-                    println!("{}", x);
-                    continue;
-                }
+                _ => continue,
             };
         }
     }
